@@ -100,6 +100,7 @@ func Process(config *config.Config) ([]types.GroupVersionDetails, error) {
 			}
 		}
 
+		details.SortKinds = config.Processor.SortKinds
 		gvDetails = append(gvDetails, details)
 	}
 

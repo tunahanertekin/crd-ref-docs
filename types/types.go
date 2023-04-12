@@ -296,9 +296,10 @@ func Key(t *Type) string {
 // GroupVersionDetails encapsulates details about a discovered API group.
 type GroupVersionDetails struct {
 	schema.GroupVersion
-	Doc   string
-	Kinds []string
-	Types TypeMap
+	Doc       string
+	Kinds     []string
+	Types     TypeMap
+	SortKinds []string
 }
 
 func (gvd GroupVersionDetails) GroupVersionString() string {
@@ -319,6 +320,13 @@ func (gvd GroupVersionDetails) SortedTypes() []*Type {
 	}
 
 	sort.Slice(typeList, func(i, j int) bool {
+
+		for _, v := range gvd.SortKinds {
+			if hasOut, out := GivePriority(typeList, i, j, v); hasOut {
+				return out
+			}
+		}
+
 		return typeList[i].Name < typeList[j].Name
 	})
 
@@ -367,8 +375,29 @@ func (gvd GroupVersionDetails) SortedKinds() []string {
 	kindsList := make([]string, len(gvd.Kinds))
 	copy(kindsList, gvd.Kinds)
 	sort.SliceStable(kindsList, func(i, j int) bool {
-		return kindsList[i] > kindsList[j]
+
+		for _, v := range gvd.SortKinds {
+			if hasOut, out := GivePriorityKind(kindsList, i, j, v); hasOut {
+				return out
+			}
+		}
+
+		return kindsList[i] < kindsList[j]
 	})
 
 	return kindsList
+}
+
+func GivePriorityKind(kindsList []string, i int, j int, resourceType string) (bool, bool) {
+	r, _ := regexp.Compile(resourceType + "$")
+
+	if r.MatchString(kindsList[i]) && !r.MatchString(kindsList[j]) {
+		return true, true
+	}
+
+	if !r.MatchString(kindsList[i]) && r.MatchString(kindsList[j]) {
+		return true, false
+	}
+
+	return false, false
 }

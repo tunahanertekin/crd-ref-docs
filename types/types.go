@@ -19,6 +19,7 @@ package types
 import (
 	"encoding/json"
 	"fmt"
+	"regexp"
 	"sort"
 	"strings"
 
@@ -324,6 +325,40 @@ func (gvd GroupVersionDetails) SortedTypes() []*Type {
 	return typeList
 }
 
+func GivePriority(typeList []*Type, i int, j int, resourceType string) (bool, bool) {
+	r, _ := regexp.Compile(resourceType + "$")
+
+	if r.MatchString(typeList[i].Name) && !r.MatchString(typeList[j].Name) {
+		return true, true
+	}
+
+	if !r.MatchString(typeList[i].Name) && r.MatchString(typeList[j].Name) {
+		return true, false
+	}
+
+	r, _ = regexp.Compile(resourceType + "Spec$")
+
+	if r.MatchString(typeList[i].Name) && !r.MatchString(typeList[j].Name) {
+		return true, true
+	}
+
+	if !r.MatchString(typeList[i].Name) && r.MatchString(typeList[j].Name) {
+		return true, false
+	}
+
+	r, _ = regexp.Compile(resourceType + "Status$")
+
+	if r.MatchString(typeList[i].Name) && !r.MatchString(typeList[j].Name) {
+		return true, true
+	}
+
+	if !r.MatchString(typeList[i].Name) && r.MatchString(typeList[j].Name) {
+		return true, false
+	}
+
+	return false, false
+}
+
 func (gvd GroupVersionDetails) SortedKinds() []string {
 	if len(gvd.Kinds) <= 1 {
 		return gvd.Kinds
@@ -331,7 +366,9 @@ func (gvd GroupVersionDetails) SortedKinds() []string {
 
 	kindsList := make([]string, len(gvd.Kinds))
 	copy(kindsList, gvd.Kinds)
-	sort.Strings(kindsList)
+	sort.SliceStable(kindsList, func(i, j int) bool {
+		return kindsList[i] > kindsList[j]
+	})
 
 	return kindsList
 }

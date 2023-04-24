@@ -23,8 +23,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/elastic/crd-ref-docs/config"
-	"github.com/elastic/crd-ref-docs/types"
+	"github.com/tunahanertekin/crd-ref-docs/config"
+	"github.com/tunahanertekin/crd-ref-docs/types"
 	"go.uber.org/zap"
 	"golang.org/x/tools/go/packages"
 	"k8s.io/apimachinery/pkg/runtime/schema"

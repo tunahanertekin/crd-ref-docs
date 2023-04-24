@@ -19,9 +19,9 @@ package renderer
 import (
 	"testing"
 
-	"github.com/elastic/crd-ref-docs/config"
-	"github.com/elastic/crd-ref-docs/types"
 	"github.com/stretchr/testify/require"
+	"github.com/tunahanertekin/crd-ref-docs/config"
+	"github.com/tunahanertekin/crd-ref-docs/types"
 )
 
 func TestKubernetesHelper(t *testing.T) {

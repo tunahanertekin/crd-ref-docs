@@ -30,8 +30,27 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 | `a` _string_ |  |
 | `b` _string_ |  |
 | `c` _string_ |  |
+| `x` _string_ |  |
 | `d` _string_ |  |
 | `e` _string_ |  |
+
+
+#### EmbeddedX
+
+
+
+
+
+_Appears in:_
+- [Embedded](#embedded)
+- [Embedded1](#embedded1)
+- [Embedded2](#embedded2)
+- [Embedded3](#embedded3)
+- [Embedded4](#embedded4)
+
+| Field | Description |
+| --- | --- |
+| `x` _string_ |  |
 
 
 #### Guestbook
@@ -110,6 +129,7 @@ _Appears in:_
 | `entries` _[GuestbookEntry](#guestbookentry) array_ | Entries contain guest book entries for the page |
 | `selector` _[LabelSelector](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#labelselector-v1-meta)_ | Selector selects something |
 | `headers` _[GuestbookHeader](#guestbookheader) array_ | Headers contains a list of header items to include in the page |
+| `certificateRef` _[SecretObjectReference](https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1beta1.SecretObjectReference)_ | CertificateRef is a reference to a secret containing a certificate |
 
 
 
